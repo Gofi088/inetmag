@@ -1,0 +1,20 @@
+﻿@model aboutproject
+
+@{
+    ViewData["Title"] = "О проекте";
+}
+
+<section class="s-content s-content--narrow">
+    <div class="row">
+        <div class="s-content__header col-full">
+            <h1 class="s-content__header-title">
+                О проекте
+            </h1>
+        </div>
+        <div class="col-full s-content__main">
+            <p class="lead">Магазин компьютерных комплектующих</p>
+            <p>@Model.Header</p>
+            <p>@Html.Raw(Model.Text)</p>
+        </div>
+    </div>
+</section>

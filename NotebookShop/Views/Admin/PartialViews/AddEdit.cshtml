@@ -1,0 +1,165 @@
+﻿@using NotebookShop.Classes;
+
+@{
+    int fileInput = 0;
+}
+
+<input type="hidden" id="currentTable" value="@ViewBag.Table" />
+
+<div style="text-align: -webkit-center; padding: 0 5px;">
+    <h4>
+        @ViewBag.MethodText
+    </h4>
+    @if (ViewBag.MethodText == "Добавить")
+    {
+        <p>
+            Id значение можно при добавлении игнорировать
+        </p>
+    }
+    <hr />
+    <div class="row">
+        <div id="rowDivRemove" class="col-md-12">
+            <form id="ApplyForm" enctype="multipart/form-data">
+
+                @for (int i = 0; i < ViewBag.Columns.Count; i++)
+                {
+                    <div class="form-group adminFormControl" style="text-align: left;">
+                        @Html.Label(ViewBag.Properties[i].Name, ViewBag.Columns[i], new { @class = "control-label", @style = "font-weight:bold;" })
+                        <div>
+                            @if (ViewBag.Properties[i].Name.ToLower().IndexOf("fk") != -1)
+                            {
+                                @Html.Raw(NotebookShop.Classes.Connector.GetFkComboBox(ViewBag.Properties[i].Name, ViewBag.Properties[i].GetValue(ViewBag.Model, null)))
+                            }
+                            else if (ViewBag.Properties[i].Name.ToLower().IndexOf("password") != -1)
+                            {
+                                <input class="form-control adminFormControl" type="text" @Html.Raw(ViewBag.ValidationList[i]) name="@ViewBag.Properties[i].Name" value="@Encryption.Decrypt(ViewBag.Properties[i].GetValue(ViewBag.Model, null))" />
+                            }
+                            else if (ViewBag.Properties[i].Name.ToLower().IndexOf("photo") != -1)
+                            {
+                                fileInput = 1;
+
+                                <label style="margin-bottom: 25px;">
+                                    Текущий файл: @ViewBag.Properties[i].GetValue(ViewBag.Model, null)
+                                    <input type="hidden" name="@ViewBag.Properties[i].Name" value="@ViewBag.Properties[i].GetValue(ViewBag.Model, null)">
+                                </label>
+
+                                <div style="text-align: center;">
+                                    <img src="@Url.Content(ViewBag.Properties[i].GetValue(ViewBag.Model, null))" style="width: 400px; height: 400px;" />
+                                </div>
+
+                                <hr />
+
+                                <select id="fileInputStatus" class="form-control adminFormControl" name="Status">
+                                    <option value="Add">
+                                        Добавить
+                                    </option>
+                                    <option value="Delete">
+                                        Удалить
+                                    </option>
+                                </select>
+
+                                <div class="form-group">
+                                    <div class="input-group input-file">
+                                        <input type="text" id="IdInputFile" class="form-control" placeholder='Файл не выбран...' readonly />
+                                        <span class="input-group-btn">
+                                            <button id="IdBtnInputFile" class="btn btn-default btn-choose" type="button">Выбрать файл</button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <hr />
+                            }
+                            else
+                            {
+                                <input class="form-control adminFormControl" type="text" @Html.Raw(ViewBag.ValidationList[i]) name="@ViewBag.Properties[i].Name" value="@ViewBag.Properties[i].GetValue(ViewBag.Model, null)" />
+                            }
+                        </div>
+                    </div>
+                }
+
+                <div class="form-group adminFormControl" id="btnApply">
+                    <input type="submit" value="Сохранить" class="btn btn-primary adminFormControl" />
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    @if (ViewBag.UserPart == false)
+    {
+        <div>
+            <a asp-action="ListView" asp-controller="Admin" asp-route-Table="@ViewBag.Table" asp-route-Page="@ViewBag.Page" data-ajax="true" data-ajax-method="POST" data-ajax-update="#PartialViewId">
+                Назад
+            </a>
+        </div>
+    }
+
+</div>
+
+<script>
+    $.validate({
+        lang: 'ru'
+    });
+
+    $(".input-file").before(
+        function () {
+            if (!$(this).prev().hasClass('input-ghost')) {
+                var element = $("<input type='file' class='input-ghost' id='IdFileImg' name='fileImg' style='visibility:hidden; height:0'>");
+                element.attr("name", $(this).attr("name"));
+                element.change(function () {
+                    element.next(element).find('input').val((element.val()).split('\\').pop());
+                });
+                $(this).find("button.btn-choose").click(function () {
+                    element.click();
+                });
+                $(this).find('input').mousedown(function () {
+                    $(this).parents('.input-file').prev().click();
+                    return false;
+                });
+                return element;
+            }
+        }
+    );
+
+    $("#btnApply").click(function (evt) {
+        evt.preventDefault();
+
+        var formData = new FormData();
+        var fileInput = @fileInput;
+
+        formData.append("Table", "@ViewBag.Table");
+        formData.append("Method", "@ViewBag.MethodValue");
+        formData.append("Page", "@ViewBag.Page");
+        formData.append("OldId", "@ViewBag.OldId");
+
+        if (fileInput === 1) {
+            formData.append("FileImg", $("#IdFileImg")[0].files[0]);
+            formData.append("Status", $("select[id=fileInputStatus] option:selected").val());
+        }
+        else {
+            formData.append("FileImg", null);
+            formData.append("Status", null);
+        }
+
+        var other_data = $("#ApplyForm").serializeArray();
+        $.each(other_data, function (_key, input) {
+            formData.append(input.name, input.value);
+        });
+
+        $.ajax({
+            url: "/Admin/Apply",
+            type: "post",
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (returnUrl) {
+                AjaxLoad(returnUrl);
+            },
+            error: function () {
+                console.log("Ошибка");
+            }
+        });
+    });
+
+</script>

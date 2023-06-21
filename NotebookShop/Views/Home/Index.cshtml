@@ -1,0 +1,56 @@
+﻿@model IEnumerable<IndexModel>
+
+@{
+    ViewData["Title"] = "Главная страница";
+}
+
+<section class="s-content">
+    <div class="row masonry-wrap">
+        <div class="masonry">
+            <div class="grid-sizer"></div>
+            @foreach (var item in Model)
+            {
+                <article class="masonry__brick entry format-standard aos-init aos-animate" data-aos="fade-up">
+                    <div class="entry__thumb" style="height:200px;">
+                        <a asp-action="Accessories" asp-controller="Home" asp-route-table="@item.Table" class="entry__thumb-link">
+                            @{
+                                string urlImg = "";
+
+                                if (!string.IsNullOrEmpty(item.Photo))
+                                {
+                                    urlImg = item.Photo;
+                                }
+                                else
+                                {
+                                    urlImg = "~/images/user/Default.png";
+                                }
+                            }
+
+                            <img src="@Url.Content(urlImg)" srcset="@Url.Content(urlImg) 1x" alt="" />
+                        </a>
+                    </div>
+                    <div class="entry__text" style="height: 350px;">
+                        <div class="entry__header">
+                            <h1 class="entry__title">
+                                <a asp-action="Accessories" asp-controller="Home" asp-route-table="@item.Table">
+                                    @item.Name
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="entry__excerpt">
+                            <p>
+                                @{
+                                    string postDescription = "";
+
+                                    postDescription = item.Description.Substring(0, item.Description.Length > 120 ? 120 : item.Description.Length);
+                                }
+
+                                @Html.Raw(postDescription)
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+    </div>
+</section>

@@ -1,0 +1,114 @@
+﻿@using System.Security.Claims;
+@using Microsoft.AspNetCore.Http;
+
+@inject IHttpContextAccessor httpContextaccessor
+
+@{
+    int? PageSize = 5;
+    try
+    {
+        PageSize = httpContextaccessor.HttpContext.Session.GetInt32("PageSize").HasValue ? httpContextaccessor.HttpContext.Session.GetInt32("PageSize") : 5;
+    }
+    catch { PageSize = 5; }
+}
+
+@{
+    ViewBag.Title = "Панель администратора";
+
+    var userIdentity = (ClaimsIdentity)User.Identity;
+}
+
+<div>
+    <div class='inline'>
+        <div><h2>Панель администратора</h2></div>
+    </div>
+</div>
+
+<table class="table table-bordered" style="overflow-x: auto;">
+    <tr style="height: 65px;">
+        <td style="min-width: 184px;" colspan="2">
+            Логин: @userIdentity.Name<br />
+        </td>
+        <td>
+            <div style="display: -webkit-inline-box;">
+                Данные:
+                <div id="TableId" />
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td width="15%;" colspan="2" style="text-align: left;">
+            <div>
+
+                <label>
+                    Количество таблиц: @ViewBag.TablesCount
+                </label><br />
+
+                <select class="input-large form-control" id="idTables" style="min-width:280px; margin-bottom: 10px;" name="Table">
+                    <option value="aboutproject">О проекте</option>
+                    <option value="admins">Администраторы</option>
+                    <option value="basket">Корзина</option>
+                    <option value="emaillist">Email рассылка</option>
+                    <option value="screens">Экраны</option>
+                    <option value="processors">Процессоры</option>
+                    <option value="videocards">Видеокарты</option>
+                    <option value="memories">Оперативная память</option>
+                    <option value="motherboards">Материнские платы</option>
+                    <option value="winchesters">Винчестера</option>
+                    <option value="orders">Заказы</option>
+                </select>
+
+                <div style="display: -webkit-inline-box;">
+                    <button class="btn btn-primary" style="min-width:137px;" id="LoadId">Загрузка</button>
+                    <button class="btn btn-primary" style="min-width:137px;" id="AddId">Добавить</button>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <div>
+                <div style="display: -webkit-inline-box">
+                    <p>Количество записей за раз: </p>
+                    <p id="idCountRecords" style="margin-left: 5px;">5</p>
+                </div>
+                <select class="input-large form-control" id="idPageSize" style="min-width:280px;" name="PageSize">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="1000">1000</option>
+                </select>
+            </div>
+
+            <hr />
+
+            <div>
+                <label>Фильтрация</label><br />
+                <input class="form-control" type="text" id="SearchField" style="margin-bottom: 10px;" />
+            </div>
+
+            <hr />
+
+            <div>
+                @Html.ActionLink("На главную", "Index", "Home") |
+                @Html.ActionLink("Выход", "LogOut", "Home")
+            </div>
+
+        </td>
+        <td id="tdPartialViewId" width="85%;" style="overflow-x: scroll; max-width: 606px;">
+            <div id="PartialViewId" />
+        </td>
+    </tr>
+</table>
+
+@section Scripts {
+    <script src="~/js/admin/adminPage.js"></script>
+    <script>
+        document.getElementById("idPageSize").value = @PageSize
+        document.getElementById("idCountRecords").innerText = @PageSize
+    </script>
+}

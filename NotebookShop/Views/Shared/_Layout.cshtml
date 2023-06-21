@@ -1,0 +1,246 @@
+﻿<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+
+    <!--- basic page needs -->
+    <meta charset="utf-8">
+    <title>Магазин компьютерных комплектующих</title>
+
+    <!-- mobile specific metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- css -->
+    <link rel="stylesheet" href="~/css/user/font-awesome.css">
+    <link rel="stylesheet" href="~/css/user/base.css">
+    <link rel="stylesheet" href="~/css/user/vendor.css">
+    <link rel="stylesheet" href="~/css/user/jquery.sweet-modal.min.css">
+    <link rel="stylesheet" href="~/css/user/main.css">
+    <link rel="stylesheet" href="~/css/user/style.css">
+
+    <!-- script -->
+    <script src="~/js/user/modernizr-2.8.3.js"></script>
+    <script src="~/js/user/pace.min.js"></script>
+
+    <!-- favicons -->
+    <link rel="shortcut icon" href="~/images/common/faviconSharp.png" type="image/x-icon">
+    <link rel="icon" href="~/images/common/faviconSharp.png" type="image/x-icon">
+
+</head>
+
+<body id="top">
+    <!-- header -->
+    <section class="s-pageheader">
+        <header class="header">
+            <div class="header__content row">
+
+                <div class="header__logo">
+                    <a class="logo" asp-action="Index" asp-controller="Home" title="На главную">
+                        <img src="~/images/user/Logo.png" alt="На главную">
+                    </a>
+                </div> <!-- end header__logo -->
+
+                <ul class="header__social">
+                    <li>
+                        <a href="#0"><i class="fa fa-vk" aria-hidden="true"></i></a>
+                    </li>
+                    <li>
+                        <a href="#0"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                    </li>
+                    <li>
+                        <a href="#0"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    </li>
+                    <li>
+                        <a href="#0"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                    </li>
+                    <li>
+                        <a href="#0"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                    </li>
+                </ul>
+
+                <a class="header__toggle-menu" href="#0" title="Menu"><span>Меню</span></a>
+
+                <nav class="header__nav-wrap">
+
+                    <h2 class="header__nav-heading h6">Навигация по сайту</h2>
+
+                    <ul class="header__nav">
+
+                        <li id="liHome">
+                            <a asp-action="Index" asp-controller="Home" title="На главную">На главную</a>
+                        </li>
+
+                        <li>
+                            <a asp-action="About" asp-controller="Home" title="О проекте">О проекте</a>
+                        </li>
+                        <li><a title="">|</a></li>
+                        <li id="liPosts" class="has-children">
+                            <a href="#" title="">Комплектующие</a>
+                            <ul>
+                                <li>
+                                    <a asp-action="Accessories" asp-controller="Home" asp-route-Table="screens" title="Экраны">Экраны</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Accessories" asp-controller="Home" asp-route-Table="processors" title="Экраны">Процессоры</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Accessories" asp-controller="Home" asp-route-Table="videocards" title="Экраны">Видеокарты</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Accessories" asp-controller="Home" asp-route-Table="memories" title="Экраны">Оперативная память</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Accessories" asp-controller="Home" asp-route-Table="motherboards" title="Экраны">Материнские платы</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Accessories" asp-controller="Home" asp-route-Table="winchesters" title="Экраны">Винчестера</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a asp-action="Basket" asp-controller="Home" title="Корзина">Корзина</a>
+                        </li>
+                    </ul> <!-- end header__nav -->
+
+                    <a href="#0" title="Close Menu" class="header__overlay-close close-mobile-menu">Закрыть</a>
+
+                </nav> <!-- end header__nav-wrap -->
+
+            </div> <!-- header-content -->
+        </header>
+    </section>
+
+    <!-- page content -->
+    @RenderBody()
+
+    <!-- footer -->
+    <footer class="s-footer">
+
+        <div class="s-footer__main">
+            <div class="row">
+
+                <div class="col-two md-four mob-full s-footer__sitelinks">
+
+                    <h4>О проекте</h4>
+
+                    <p>
+                        Текст
+                    </p>
+
+                </div> <!-- end s-footer__sitelinks -->
+
+                <div class="col-two md-four mob-full s-footer__archives">
+
+                    <h4>Запчасти</h4>
+
+                    <ul class="s-footer__linklist">
+                        <li>
+                            <a asp-action="Accessories" asp-controller="Home" asp-route-Table="screens" title="Экраны">Экраны</a>
+                        </li>
+                        <li>
+                            <a asp-action="Accessories" asp-controller="Home" asp-route-Table="processors" title="Экраны">Процессоры</a>
+                        </li>
+                        <li>
+                            <a asp-action="Accessories" asp-controller="Home" asp-route-Table="videocards" title="Экраны">Видеокарты</a>
+                        </li>
+                        <li>
+                            <a asp-action="Accessories" asp-controller="Home" asp-route-Table="memories" title="Экраны">Оперативная память</a>
+                        </li>
+                        <li>
+                            <a asp-action="Accessories" asp-controller="Home" asp-route-Table="motherboards" title="Экраны">Материнские платы</a>
+                        </li>
+                        <li>
+                            <a asp-action="Accessories" asp-controller="Home" asp-route-Table="winchesters" title="Экраны">Винчестера</a>
+                        </li>
+                    </ul>
+
+                </div> <!-- end s-footer__archives -->
+
+                <div class="col-two md-four mob-full s-footer__social">
+
+                    <h4>Соц сети</h4>
+
+                    <ul class="s-footer__linklist">
+                        <li><a href="#0">Vk</a></li>
+                        <li><a href="#0">Facebook</a></li>
+                        <li><a href="#0">Twitter</a></li>
+                        <li><a href="#0">Instagram</a></li>
+                        <li><a href="#0">LinkedIn</a></li>
+                    </ul>
+
+                </div> <!-- end s-footer__social -->
+
+                <div class="col-five md-full end s-footer__subscribe">
+
+                    <h4>Последние новости и предложения</h4>
+
+                    <p>Подпишитесь чтобы получать всё самое интересное первыми!</p>
+
+                    <div class="subscribe-form">
+                        <div id="mc-form" class="group">
+
+                            <input type="email" id="inputSubscribe" class="email" placeholder="Email">
+
+                            <input id="btnSubscribe" type="submit" name="subscribe" value="Подписаться">
+
+                            <label id="infoBlock" class="subscribe-message"></label>
+
+                        <div/>
+                    </div>
+
+                </div> <!-- end s-footer__subscribe -->
+
+            </div>
+        </div> <!-- end s-footer__main -->
+
+        <div class="s-footer__bottom">
+            <div class="row">
+                <div class="col-full">
+                    <div class="s-footer__copyright">
+                        <div class="s-footer__copyright">
+                            <span>© Магазин компьютерных комплектующих 2017 — @DateTime.Now.Year</span>
+                        </div>
+                    </div>
+                    <div class="go-top link-is-visible">
+                        <a class="smoothscroll" title="Back to Top" href="#top"></a>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end s-footer__bottom -->
+
+    </footer>
+
+    <!-- preloader -->
+    <div id="preloader">
+        <div id="loader">
+            <div class="line-scale">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- scripts -->
+    <script type="text/javascript" src="~/js/common/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="~/js/common/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript" src="~/js/common/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/js/common/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript" src="~/js/common/jquery.form-validator/2.3.77/jquery.form-validator.min.js"></script>
+
+    <script type="text/javascript" src="~/js/common/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/js/admin/respond.min.js"></script>
+    <script type="text/javascript" src="~/js/admin/bootstrap-combobox.js"></script>
+
+    <!-- user scripts -->
+    <script type="text/javascript" src="~/js/user/jquery.sweet-modal.min.js"></script>
+    <script type="text/javascript" src="~/js/user/plugins.js"></script>
+    <script type="text/javascript" src="~/js/user/main.js"></script>
+    <script type="text/javascript" src="~/js/user/site.js"></script>
+
+    <!-- page scripts -->
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = ViewBag.Model.Model;
+    int id = 0;
+}
+
+<section class="s-content s-content--narrow s-content--no-padding-bottom" style="padding-bottom: 5%;">
+    <article class="row format-gallery">
+        <div id="divList">
+            <div class="s-content__header col-full">
+                <h3 class="s-content__header-title">
+                    @ViewBag.Header
+                </h3>
+            </div>
+            <div class="col-full s-content__main">
+                <p style="text-align: center;">
+                    <img src="@Url.Content(ViewBag.Model.Photo)" srcset="@Url.Content(ViewBag.Model.Photo) 500w" sizes="(max-width: 500px) 100vw, 500px" alt="">
+                </p>
+                <hr />
+
+                @for (int i = 0; i < ViewBag.Columns.Count; i++)
+                {
+                    <p>
+                        @if (ViewBag.Properties[i].Name == "Photo")
+                        {
+                            continue;
+                        }
+                        else if (ViewBag.Properties[i].Name == "Id")
+                        {
+                            id = ViewBag.Properties[i].GetValue(ViewBag.Model, null);
+                            continue;
+                        }
+                        @ViewBag.Columns[i]: @ViewBag.Properties[i].GetValue(ViewBag.Model, null)
+                    </p>
+                }
+
+                <form asp-action="AddToBasket" asp-controller="Home" asp-route-table="@ViewBag.Table" asp-route-id="@id"
+                      data-ajax="true" data-ajax-method="POST" data-ajax-success="AlertMessage">
+                    <button id="btnBusket" class="submit btn btn--primary full-width" type="submit">
+                        Заказать
+                    </button>
+                    <div id="success" class="alert-box alert-box--success hideit" style="display: none;">
+                        <i class="fa fa-times alert-box__close"></i>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </article>
+</section>

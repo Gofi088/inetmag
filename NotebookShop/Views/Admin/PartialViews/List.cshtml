@@ -1,0 +1,123 @@
+﻿@using System.Reflection;
+@using NotebookShop.Classes;
+
+@*import this so we get our HTML Helper*@
+@using X.PagedList.Mvc.Core;
+
+@*import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+@using X.PagedList.Mvc.Common
+
+<p>
+    Общее количество строк в таблице: @ViewBag.TableCount
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            @for (int i = 0; i < ViewBag.Columns.Count; i++)
+            {
+                <td style="text-align: center; min-width: 200px;">
+                    <a asp-action="ListView" asp-controller="Admin" asp-route-Table="@ViewBag.Table" asp-route-Page="@ViewBag.Page" asp-route-SortingField="@ViewBag.Properties[i].Name" asp-route-OrderBy="@ViewBag.OrderBy"
+                       data-ajax="true" data-ajax-method="POST" data-ajax-update="#PartialViewId">
+                        @ViewBag.Columns[i]
+                    </a>
+                </td>
+            }
+            <td colspan="2"></td>
+        </tr>
+    </thead>
+    @foreach (var record in ViewBag.Model)
+    {
+        <tbody>
+            <tr>
+                @foreach (PropertyInfo property in ViewBag.Properties)
+                {
+                    string text = property.GetValue(record, null).ToString();
+
+                    if (property.Name.ToLower().IndexOf("fk") != -1)
+                    {
+                        text = Connector.GetFkValue(property.Name, int.Parse(text)) + " (" + text + ")";
+                    }
+                    else if (property.Name.ToLower().IndexOf("password") != -1)
+                    {
+                        text = Encryption.Decrypt(text);
+                    }
+
+                    if (text.Length != 0 || text != null)
+                    {
+                        text = text.Substring(0, text.Length > 100 ? 100 : text.Length);
+                    }
+
+                    @if (property.Name.ToLower().IndexOf("photo") != -1)
+                    {
+                        <td style="text-align: center;">
+                            <img src="@Url.Content(text)" style="width: 150px; height: 150px;" /><br />
+                            @text
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @text
+                        </td>
+                    }
+                }
+                <td>
+                    <a class="btn btn-primary" asp-action="AddEditShow" asp-controller="Admin" asp-route-Table="@ViewBag.Table" asp-route-Method="Update"
+                       asp-route-Id="@record.Id" asp-route-Page="@ViewBag.Page" data-ajax="true" data-ajax-method="POST"
+                       data-ajax-update="#PartialViewId">
+                        Редактировать
+                    </a>
+                </td>
+                <td>
+
+                    @{
+                        string idModalWindow = "modalWindow" + record.Id;
+                        string idModallongtitle = "exampleModalLongTitle" + record.Id;
+                        string idModalCenterSharp = "#" + idModalWindow;
+                    }
+
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@idModalCenterSharp">
+                        Удалить
+                    </button>
+
+                    <!-- modal -->
+                    <div class="modal fade" id="@idModalWindow" tabindex="-1" role="dialog" aria-labelledby="examplemodalcentertitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="@idModallongtitle">Удалить ?</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Удаление строки<br />
+                                    Вы действительно хотите удалить запись с номером — @record.Id?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                    <a class="btn btn-primary btnDelete" asp-action="Delete" asp-controller="Admin"
+                                       asp-route-table="@ViewBag.Table" asp-route-id="@record.Id" asp-route-page="@ViewBag.Page" asp-route-userPart="false"
+                                       data-ajax="true" data-ajax-method="POST" data-ajax-begin="ModalHide"
+                                       data-ajax-success="AjaxLoad"
+                                       data-ajax-update="#PartialViewId">
+                                        Удалить
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    }
+
+</table>
+
+@Html.PagedListPager((X.PagedList.IPagedList)ViewBag.Model, page => Url.Action("ListView", "Admin", new { Page = page, Table = ViewBag.Table }),
+    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "PartialViewId" }))
+
+@section Scripts{
+    <script type="text/javascript" src="~/js/admin/adminPage.js"></script>
+}

@@ -1,0 +1,93 @@
+﻿@model IEnumerable<BasketModel>
+
+@{
+    ViewData["Title"] = "Корзина";
+    int summ = ViewBag.Summ;
+}
+
+<section class="s-content s-content--narrow">
+    <div class="row">
+        <div class="s-content__header col-full">
+            <h1 class="s-content__header-title">
+                Корзина
+            </h1>
+        </div>
+        <div class="row add-bottom">
+            <div class="col-twelve">
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Номер</th>
+                                <th>Модель</th>
+                                <th>Описание</th>
+                                <th>Цена</th>
+                                <th>Превью</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                string id = item.Table + "_" + item.ModelId;
+
+                                <tr class="@id">
+                                    <td>@item.ModelId</td>
+                                    <td>@item.Model</td>
+                                    <td>@item.Description</td>
+                                    <td>@item.Cost</td>
+                                    <td>
+                                        <img src="@Url.Content(item.Photo)" alt="@item.Model" style="width: 100px; height: 100px;" />
+                                    </td>
+                                    <td>
+                                        <form asp-action="DeleteFromBasket" asp-controller="Home" data-ajax="true" data-ajax-method="POST" data-ajax-success="HideGoods">
+                                            <input type="hidden" name="table" value="@item.Table" />
+                                            <input type="hidden" name="modelId" value="@item.ModelId" />
+                                            <input type="hidden" name="minusCost" value="@item.Cost" />
+
+                                            <button class="submit btn btn--primary full-width @id" type="submit">
+                                                Удалить
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }                            
+                        </tbody>
+                    </table>                    
+                </div>
+            </div>
+
+            <div>
+                <p id="summDiv">Итоговая сумма: @summ</p>
+            </div>
+
+            <hr />
+
+            <form asp-action="FinishOrder" asp-controller="Home" data-ajax="true" data-ajax-method="POST" data-ajax-success="AlertMessage">
+
+                <div class="form-field">
+                    <input name="initials" type="text" class="full-width" placeholder="Представтесь" value="">
+                </div>
+
+                <div class="form-field">
+                    <input name="address" type="text" class="full-width" placeholder="Куда доставить?" value="">
+                </div>
+
+                <button id="btnOrder" type="submit" class="submit btn btn--primary full-width">
+                    Оформить заказ
+                </button>
+            </form>
+            <div id="orderError" class="alert-box alert-box--error hideit" style="display: none;">
+                <i class="fa fa-times alert-box__close"></i>
+            </div>
+
+            <div id="orderSuccess" class="alert-box alert-box--success hideit" style="display: none;">
+                <i class="fa fa-times alert-box__close"></i>
+            </div>
+
+            <div id="orderInfo" class="alert-box alert-box--info hideit" style="display: none;">
+                <i class="fa fa-times alert-box__close"></i>
+            </div>
+        </div> <!-- end row -->
+    </div>
+</section>

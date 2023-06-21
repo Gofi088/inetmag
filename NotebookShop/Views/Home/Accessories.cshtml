@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "Комплектующие";
+}
+
+<section class="s-content">
+    <div class="row narrow">
+        <div class="col-full s-content__header aos-init aos-animate" data-aos="fade-up">
+            <button id="btnFilter" class="btn btn--primary full-width">
+                Показать окно фильтрации
+            </button>
+            <div id="formFilter" style="display: none;">
+                <form id="ApplyForm" enctype="multipart/form-data">
+                    @Html.Raw(ViewBag.FilterFields)
+                    <input class="btn--primary full-width" type="submit" id="btnApply" value="Фильтрация">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="divList" class="row masonry-wrap">
+        @if (ViewBag.List.Count <= 0)
+        {
+            <div style="text-align: center;">
+                <h3>
+                    Больше записей нет, вернитесь обратно!
+                </h3>
+                <hr />
+                <a asp-action="Accessories" asp-controller="Home" asp-route-table="@ViewBag.Table"
+                   style="margin-right: 2%;" class="submit btn btn--primary full-width">
+                    К полному списку
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="masonry">
+                <div class="grid-sizer"></div>
+
+                @foreach (var item in ViewBag.List)
+                {
+                    <article class="masonry__brick entry format-standard aos-init aos-animate" data-aos="fade-up">
+                        <div class="entry__thumb" style="height:200px;">
+                            <a asp-action="SinglePost" asp-controller="Home" asp-route-id="@item.Id" asp-route-table="@ViewBag.Table" class="entry__thumb-link">
+                                @{
+                                    string urlImg = "";
+
+                                    if (!string.IsNullOrEmpty(item.Photo))
+                                    {
+                                        urlImg = item.Photo;
+                                    }
+                                    else
+                                    {
+                                        urlImg = "~/images/user/Default.png";
+                                    }
+                                }
+
+                                <img src="@Url.Content(urlImg)" srcset="@Url.Content(urlImg) 1x" alt="" />
+                            </a>
+                        </div>
+                        <div class="entry__text" style="height: 350px;">
+                            <div class="entry__header">
+                                <h1 class="entry__title">
+                                    <a asp-action="SinglePost" asp-controller="Home" asp-route-id="@item.Id" asp-route-table="@ViewBag.Table">
+                                        @item.Model
+                                    </a>
+                                </h1>
+                            </div>
+                            <div class="entry__excerpt">
+                                <p>
+                                    @{
+                                        string postDescription = "";
+
+                                        postDescription = item.Description.Substring(0, item.Description.Length > 120 ? 120 : item.Description.Length);
+                                    }
+
+                                    @Html.Raw(postDescription) ...
+                                </p>
+                                <p>
+                                    Цена: @item.Cost
+                                </p>
+                            </div>
+                        </div>
+                        <form asp-action="AddToBasket" asp-controller="Home" asp-route-table="@ViewBag.Table" asp-route-id="@item.Id"
+                              data-ajax="true" data-ajax-method="POST" data-ajax-success="AlertMessage">
+
+                            @{ string successId = "success" + @item.Id; }
+
+                            <div id="@successId" class="alert-box alert-box--success hideit" style="display: none;">
+                                <i class="fa fa-times alert-box__close"></i>
+                            </div>
+                            <button id="btnBusket" class="submit btn btn--primary full-width" type="submit">
+                                Заказать
+                            </button>
+                        </form>
+                    </article>
+                }
+            </div>
+            <div style="display: flex; padding: 16px;">
+                <a asp-action="Accessories" asp-controller="Home" asp-route-table="@ViewBag.Table" asp-route-nextPrev="prev" asp-route-page="@ViewBag.Page"
+                   style="margin-right: 2%;" class="submit btn btn--primary full-width">
+                    Предыдущие 10
+                </a>
+                <a asp-action="Accessories" asp-controller="Home" asp-route-table="@ViewBag.Table" asp-route-nextPrev="next" asp-route-page="@ViewBag.Page"
+                   class="submit btn btn--primary full-width">
+                    Следующие 10
+                </a>
+            </div>
+        }
+    </div>
+</section>

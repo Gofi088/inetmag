@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Авторизация";
+}
+
+<section class="s-content s-content--narrow">
+    <div class="row">
+        <div class="s-content__header col-full">
+            <h1 class="s-content__header-title">
+                Авторизация
+            </h1>
+        </div>
+        <div class="col-full s-content__main">
+            <div class="row">
+                <h3>Вход</h3>
+
+                <form asp-action="SignIn" asp-controller="Home" data-ajax="true" data-ajax-method="POST" data-ajax-success="AlertMessage">
+                    <div class="form-field">
+                        <input name="email" type="text" class="full-width" placeholder="Email" value="">
+                    </div>
+
+                    <div class="form-field">
+                        <input name="password" type="password" class="full-width" placeholder="Пароль" value="">
+                    </div>
+
+                    <button id="signInBtn" type="submit" class="submit btn btn--primary full-width">
+                        Вход
+                    </button>
+                </form>
+
+                <div id="signInError" class="alert-box alert-box--error hideit" style="display: none;">
+                    <i class="fa fa-times alert-box__close"></i>
+                </div>
+
+                <div id="signInSuccess" class="alert-box alert-box--success hideit" style="display: none;">
+                    <i class="fa fa-times alert-box__close"></i>
+                </div>
+
+                <div id="signInInfo" class="alert-box alert-box--info hideit" style="display: none;">
+                    <i class="fa fa-times alert-box__close"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,24 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.adminDiv {
+    margin: 0px 15px 0px 15px;
+}
+
+.adminFormControl {
+    padding: 0px 50px 0px 50px;
+    max-width: 100%;
+    width: 100%;
+    min-height: 38px;
+}

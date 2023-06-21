@@ -1,0 +1,21 @@
+﻿@model NotebookShop.Models.Common.ErrorModel
+
+@{
+    ViewData["Title"] = Model.Code;
+}
+
+<section class="s-content s-content--narrow">
+    <div class="row">
+        <div class="row narrow section-intro add-bottom text-center">
+            <div class="col-twelve tab-full">
+                <h1>Ошибка: @Model.Code</h1>
+                <p class="lead">
+                    @Model.MessageToUser
+                </p>
+                <p>
+                    @Html.ActionLink("На главную", "Index", "Home")
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,16 @@
+﻿@{
+    string currentUrlPath = Context.Request.Path;
+
+    if ((currentUrlPath.IndexOf("Home") != -1) || (currentUrlPath.IndexOf("Error") != -1))
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else if ((currentUrlPath.IndexOf("Admin") != -1) || (currentUrlPath.IndexOf("ErrorAdmin") != -1))
+    {
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}

@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Страница перенаправления";
+}
+
+<row>
+    <h3>
+        Страница перенаправления
+    </h3>
+    <hr /><br />
+    <h3>
+        @ViewBag.RedirectMessage
+    </h3>
+</row>
+
+<div>
+    @Html.ActionLink("Панель администратора", "Index", "Admin")
+</div>
